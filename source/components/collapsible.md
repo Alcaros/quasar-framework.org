@@ -56,8 +56,6 @@ You can group multiple Collapsibles to act as an Accordion, which is to open onl
 </q-list>
 ```
 
-You can add `item-separator` class on the list `<div>` element if you want separators between Collapsibles.
-
 ## Vue Properties
 Since QCollapsible is a wrapper over QItem components, it inherits some of their properties as you can see below.
 
@@ -75,7 +73,7 @@ Supports `v-model` to control the state (open/close).
 | `header-class` | Array/String/Object | Vue class binding for header. |
 | `disable` | Boolean | Disable current Collapsible. |
 
-QItem components inherited properties:
+QItem & QItem related components inherited properties:
 
 | Inherited Property | Type | Description |
 | --- | --- | --- |
