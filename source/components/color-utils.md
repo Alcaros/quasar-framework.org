@@ -1,71 +1,46 @@
-title: Color Palette
+title: Color Utils
 ---
-Quasar Framework offers a wide selection of colors out of the box. You can use them both as Stylus variables in your CSS code or directly as CSS classes in your HTML templates.
 
-<input type="hidden" data-fullpage-demo="style-and-identity/color-palette">
+Quasar provides a set of useful functions to manipulate colors easily in most use cases, without the high additional cost of integrating dedicated libraries.
 
-This page comes really handy after reading [Quasar Theming](/guide/quasar-theming.html). You might also want to check [Color Utils](/components/color-utils.html).
+### Helping Tree-Shake
+You will notice all examples import `colors` Object from Quasar. However, if you need only one method from it, then you can use ES6 destructuring to help Tree Shaking embed only that method and not all of `colors`.
 
-## Brand Colors
-There can be three main colors used throughout your App, called `primary`, `secondary` and `tertiary`.
+Example with `setBrand()`:
+```js
+// we import all of `colors`
+import { colors } from 'quasar'
+// destructuring to keep only what is needed
+const { setBrand } = colors
 
-Most of the colors that Quasar Components use are strongly linked with these three colors that you can change. Choosing these colors is the first step one should take when differentiating the design of its own App. You'll notice immediately on changing their default values that Quasar Components follow these colors as a guideline.
-
-## Color List
-
-Here's the list of colors provided out of the box. Use them as CSS classes (in HTML templates) or as Stylus variables (in `<style lang="stylus">` tags) within your app's `*.vue` files.
-
-`primary`, `secondary`, `tertiary`
-`positive`, `negative`, `info`, `warning`, `white`, `light`, `dark`, `faded`
-
-On the following colors there are variations available:
-`red`, `pink`, `purple`, `deep-purple`, `indigo`, `blue`, `light-blue`, `cyan`, `teal`, `green`, `light-green`, `lime`, `yellow`, `amber`, `orange`, `deep-orange`, `brown`, `grey`, `blue-grey`
-
-Example of color variation: `red`, `red-1`, `red-2`, ..., `red-14`. See the demo to make a good picture of what variations are. Variation 11 to 14 are color accents.
-
-## Using as CSS Classes
-Use `text-` or `bg-` prefixes as class names to change the color of text or the color of the background.
-
-``` html
-<!-- changing text color -->
-<p class="text-primary">....</p>
-
-<!-- changing background color -->
-<p class="bg-positive">...</p>
+setBrand('primary', '#f33')
 ```
 
-## Using Stylus Variables
-In your app's `*.vue` files you can use the colors as `$primary`, `$red-1`, and so on.
+## Color Conversion
+These functions take a color as string or Object and convert it to another format.
 
-```html
-<!-- Notice lang="stylus" -->
-<style lang="stylus">
-// "variables" is a Webpack alias injected by Quasar CLI
-@import '~variables'
+| Function | Source format | Destination format | Description |
+| --- | --- | --- | --- |
+| `rgbToHex` | Object | String | Converts a RGB/A color Object (`{ r: [0-255], g: [0-255], b: [0-255}<,  a: [0-100]>}`) to it's HEX/A representation as a String (`#RRGGBB<AA>`). If Alpha channel is present in the original object it will be present also in the output. |
+| `rgbToHsv` | Object | Object | Converts a RGB/A color Object (`{ r: [0-255], g: [0-255], b: [0-255}<,  a: [0-100]>}`) to it's HSV/A representation as an Object (`{ h: [0-360], s: [0-100], v: [0-100},  a: [0-100]}`). If Alpha channel is present in the original object it will be present also in the output. |
+| `hexToRgb` | String | Object | Converts a HEX/A color String (`#RRGGBB<AA>`) to it's RGB/A representation as an Object (`{ r: [0-255], g: [0-255], b: [0-255}<,  a: [0-100]>}`) to it's . If Alpha channel is present in the original object it will be present also in the output. |
+| `textToRgb` | String | Object | Converts a HEX/A color String (`#RRGGBB<AA>`) or a RGB/A color String(`rgb(R, G, B<, A>)`) to it's RGB/A representation as an Object (`{ r: [0-255], g: [0-255], b: [0-255}<,  a: [0-100]>}`) to it's . If Alpha channel is present in the original object it will be present also in the output. |
+| `hsvToRgb` | String | Object | Converts a HSV/A color Object (`{ h: [0-360], s: [0-100], v: [0-100},  a: [0-100]}`) to it's RGB/A representation as an Object (`{ r: [0-255], g: [0-255], b: [0-255}<,  a: [0-100]>}`) to it's . If Alpha channel is present in the original object it will be present also in the output. |
 
-div
-  color $red-1
-  background-color $grey-5
-</style>
-```
+## Color Processing
+These functions perform changes on the color or extract specific information.
 
-## Adding Your Own Colors
-If you want to use colors of your own for components, let's say we are adding a color named "brand", all you need to do is add the following CSS into your app:
+### lighten (color, percent)
+Lighten the `color` (if `percent` is positive) or darken it (if `percent` is negative).
 
-```css
-.text-brand {
-  color: #a2aa33;
-}
-.bg-brand {
-  background: #a2aa33;
-}
-```
+Accepts a HEX/A String or a RGB/A String as `color` and a `percent` (0 to 100 or -100 to 0) of lighten/darken to be applied to the `color`.
+Returns a HEX String representation of the calculated `color`.
 
-Now we can use this color for Quasar components:
-```html
-<q-input color="brand" ... />
-```
+### luminosity (color)
+Calculates the [relative luminance](http://www.w3.org/TR/WCAG20/#relativeluminancedef) of the `color`.
 
+Accepts a HEX/A String, a RGB/A String or a RGB/A Object as `color`.
+Returns a value between 0 and 1.
 
 ## Dynamic Change of Brand Colors (Dynamic Theme Colors)
 
